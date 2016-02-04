@@ -309,7 +309,7 @@ inline bool write_json(Writer& writer, const msgpack::object& o)
             msgpack::object* ptr = o.via.array.ptr;
             msgpack::object* end = ptr + o.via.array.size;
             for (; ptr < end; ++ptr) {
-                if (!write_json(writer, *ptr)) {
+                if (!write_json<Writer, StringConversion>(writer, *ptr)) {
                     return false;
                 }
             }
@@ -324,10 +324,10 @@ inline bool write_json(Writer& writer, const msgpack::object& o)
                 // Writer::Key() is a synonym of Writer::String() so we can delegate.
                 // The SAX API will likely complain if the key is not a string, but we
                 // can offload that responsibility instead of ensuring it ourselves.
-                if (!write_json(writer, ptr->key)) {
+                if (!write_json<Writer, StringConversion>(writer, ptr->key)) {
                     return false;
                 }
-                if (!write_json(writer, ptr->val)) {
+                if (!write_json<Writer, StringConversion>(writer, ptr->val)) {
                     return false;
                 }
             }
