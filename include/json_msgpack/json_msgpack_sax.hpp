@@ -182,6 +182,10 @@ struct msgpack_from_json_handler
         return true;
     }
 
+    bool RawNumber(const char* str, std::size_t length, bool copy) {
+        return String(str, length, copy);
+    }
+
     bool String(const char* str, std::size_t length, bool copy) {
         msgpack::object* o = queue_object();
         if (!o) { return false; }
